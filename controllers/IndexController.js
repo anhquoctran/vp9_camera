@@ -1,4 +1,4 @@
-var db = require('./db')
+var db = require('../db')
 const {
     check,
     validationResult
@@ -29,7 +29,6 @@ function IndexController(app) {
 
         check('vehicle_plate')
         .exists()
-        .custom(new CustomValiator)
         .withMessage('cannot be null'),
 
         check('encoded_plate_image')
