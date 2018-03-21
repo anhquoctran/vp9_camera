@@ -9,9 +9,6 @@ app.listen(PORT, function () {
     console.log("Application is running at port: " + PORT)
 })
 
-// app.set("view engine", "ejs")
-// app.use('/public', express.static(__dirname + '/public'))
-
 //config express middleware
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
