@@ -1,0 +1,37 @@
+.demo {
+    color: red;
+}
+
+/* .myTable {
+    border: solid 1px #DDEEEE;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font: normal 13px Arial, sans-serif;
+}
+.myTable th {
+    background-color: #DDEFEF;
+    border: solid 1px #DDEEEE;
+    color: #336B6B;
+    padding: 10px;
+    text-align: left;
+    text-shadow: 1px 1px 1px #fff;
+}
+.myTable tbody td {
+    border: solid 1px #DDEEEE;
+    color: #333;
+    padding: 10px;
+    text-shadow: 1px 1px 1px #fff;
+}
+    .myTable-vertical tbody td {
+    border-top: none;
+    border-bottom: none;
+} */
+
+.mydiv {
+    margin: 0 auto;
+    width: 70%
+
+}
+#frmUpdate .form-group{
+    margin-bottom: 5px;
+}
