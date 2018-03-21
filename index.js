@@ -1,11 +1,13 @@
 var express = require("express")
-var bodyparser = require("body-parser");
+var bodyparser = require("body-parser")
+var dotenv = require('dotenv').config()
 
-const port = 1899
+
+const PORT = process.env.PORT || 1899
 var app = express()
 
-app.listen(port, function () {
-    console.log("Application is running at port: " + port)
+app.listen(PORT, function () {
+    console.log("Application is running at port: " + PORT)
 })
 
 // app.set("view engine", "ejs")

@@ -1,5 +1,8 @@
 var db = require('./db')
-const { check, validationResult } = require('express-validator/check');
+const {
+    check,
+    validationResult
+} = require('express-validator/check');
 
 
 function IndexController(app) {
@@ -9,7 +12,7 @@ function IndexController(app) {
             message: "hello"
         })
     })
-    
+
     app.post('/add_image', [
         check('camera_id')
         .exists()
@@ -17,7 +20,7 @@ function IndexController(app) {
         .withMessage('cannot be null and must be numeric type'),
 
         check('frametime')
-        .exists() 
+        .exists()
         .withMessage('cannot be null and must be date time type'),
 
         check('location')
@@ -48,18 +51,18 @@ function IndexController(app) {
         var encoded_vehicle_image = body.encoded_vehicle_image
         var location = body.location
         var vehicle_plate = body.vehicle_plate
-    
+
         var sql = "insert into detect_data(vehicle_plate, camera_id, frametime, encoded_plate_image, encoded_vehicle_image, location) values(?, ?, ?, ?, ?, ?)"
         db.connect.query(sql, [vehicle_plate, camera_id, frametime, encoded_plate_image, encoded_vehicle_image, location], function (error, result) {
-            if(error) throw error
-            if(result) {
+            if (error) throw error
+            if (result) {
                 res.redirect("/")
                 return;
             }
         })
 
     })
-    
+
     app.get('/get_image', [
         check('camera_id')
         .withMessage('cannot be null or empty')
@@ -71,9 +74,9 @@ function IndexController(app) {
         .exists()
     ], function (req, res) {
         var sql = "SELECT * FROM data_detect WHERE camera_id = ? and last_update from ? to ?"
-        
-        db.connect.query(sql, [], function(err, result) {
-            if(err) {
+
+        db.connect.query(sql, [], function (err, result) {
+            if (err) {
                 throw err
                 res.status(500).send({
                     message: "ERROR_GET"
