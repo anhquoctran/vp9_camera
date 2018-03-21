@@ -1,6 +1,7 @@
 var mysql = require("mysql")
 require('dotenv').config()
 
+//Define connection string for connect to MySQL Server database
 var connectionString = {
     host: process.env.MYSQL_SERVER || 'localhost',
     user: process.env.MYSQL_USERNAME || 'root',
@@ -12,6 +13,8 @@ var connectionString = {
     dateStrings: "date"
 }
 
+
+//Function class for handling database connection
 function Config() {
 
     this.connect = mysql.createConnection(connectionString)

@@ -7,6 +7,7 @@ const {
 
 function IndexController(app) {
 
+    //Handling index route
     app.get('/', function (req, res) {
         return res.json({
             message: "hello"
