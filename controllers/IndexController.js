@@ -60,48 +60,19 @@ function IndexController(app) {
 
     })
     
-    
-    app.post('/update_image', function processUpdate(req, res) {
-        console.log(JSON.stringify(req.body))
-        var body = req.body
-        if(!body) {
-            return res.status(400).send({
-                message: "ERROR_UPDATE"
-            })
-        }
-    
-        var camera_id = body.camera_id
-        var frametime = body.frametime
-        var encoded_plate_image = body.encoded_plate_image
-        var encoded_vehicle_image = body.encoded_vehicle_image
-        var location = body.location
-    
-        if(!lastname || !firstname || !birthday || !gender) {
-            return res.status(400).send({
-                message: "ERROR_UPDATE"
-            })
-        } 
-    
-        var sql = "update usertbl set camera_id = ?, frametime = ?, encoded_plate_image = ?, encoded_vehicle_image = ?, location = ? where id = ?"
-    
-        db.connect.query(sql, [camera_id, frametime, encoded_plate_image, encoded_vehicle_image, location, id], function (err, result) {
-            if(err) {
-                throw err;
-                res.statuc(500).send({
-                    "message" : "ERROR_UPDATE"
-                })
-            }
-            if(result) {
-                res.redirect("/")
-            }
-        })
-    
-    })
-    
-    app.get('/reload', function (req, res) {
-        var sql = "SELECT * FROM data_detect"
+    app.get('/get_image', [
+        check('camera_id')
+        .withMessage('cannot be null or empty')
+        .exists()
+        .isNumeric(),
+
+        check('from')
+        .withMessage('cannot be null and must be valid date time format')
+        .exists()
+    ], function (req, res) {
+        var sql = "SELECT * FROM data_detect WHERE camera_id = ? and last_update from ? to ?"
         
-        db.connect.query(sql, function(err, result) {
+        db.connect.query(sql, [], function(err, result) {
             if(err) {
                 throw err
                 res.status(500).send({
