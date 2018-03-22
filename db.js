@@ -1,7 +1,9 @@
 var Sequelize = require('sequelize')
+var config = require('./config.json')
+var winston = require('winston')
+
 require('mysql')
 require('mysql2')
-var config = require('./config.json');
 require('dotenv').config()
 
 var sequelize = new Sequelize(process.env.MYSQL_DATABASE || "camera_vp9", process.env.MYSQL_USERNAME || "root", process.env.MYSQL_PASSWORD || 'anhquoc1996@@', {
@@ -9,7 +11,7 @@ var sequelize = new Sequelize(process.env.MYSQL_DATABASE || "camera_vp9", proces
     port: process.env.MYSQL_PORT || 3306,
     dialect: 'mysql',
     operatorsAliases: false,
-    logging: false
+    logging: winston.verbose
 })
 
 sequelize.authenticate().then(function (err) {

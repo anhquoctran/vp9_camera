@@ -1,6 +1,7 @@
 var express = require("express")
 var bodyparser = require("body-parser")
 var passport = require('passport')
+var morgan = require('morgan')
 
 require('dotenv').config()
 
@@ -21,5 +22,6 @@ app.use(function(req, res, next) {
     res.removeHeader("X-Powered-By")
     next();
 })
+app.use(morgan('dev'))
 
 require('./controllers/IndexController')(app, passport)
