@@ -44,8 +44,8 @@ function IndexController(app, passport) {
 
         check('frametime')
         .exists()
-        
-        .withMessage('cannot be null and must be date time type'),
+        .withMessage('cannot be null and must be date time type')
+        ,
 
         check('location')
         .exists()
@@ -65,9 +65,18 @@ function IndexController(app, passport) {
         .trim()
         .isBase64()
     ], function (req, res) {
-        var body = req.body;
 
-        console.log(body)
+        const errors = validationResult(req)
+        if(!errors.isEmpty()) {
+            return res.status(400).json({
+                message: "Validation Error: " + errors.mapped(),
+                success: false,
+                status: 400
+            })
+        }
+
+        var body = req.body;
+        
         var camera_id = body.camera_id
         var frametime = body.frametime
         var encoded_plate_image = body.encoded_plate_image
@@ -85,7 +94,15 @@ function IndexController(app, passport) {
         }).then(function(data) {
             
             return res.json({
-                message: "Inserted"
+                message: "SAVE_OK",
+                success: true,
+                status: 200
+            })
+        }).catch(function(err) {
+            return res.status(500).send({
+                message: "SAVE_FAILED",
+                success: false,
+                status: 500
             })
         })
     })
@@ -103,15 +120,14 @@ function IndexController(app, passport) {
         const errors = validationResult(req)
         if(!errors.isEmpty()) {
             return res.status(422).json({
-                errors: errors.mapped()
+                message: "Error: " + errors.mapped(),
+                success: false,
+                status: 422
             })
         } else {
-            Item.findAll({
-                where: {
-                    camera_id: res.body.camera_id,
-                    frametime: moment(res.body.from).toDate()
-                }
-            })
+            Item.findAll({})
+            .then(function(data) {})
+            .catch(function(error) {})
         }
         
     })

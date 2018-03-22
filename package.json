@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.6.0",
     "body-parser": "latest",
     "dotenv": "^5.0.1",
     "ejs": "latest",
