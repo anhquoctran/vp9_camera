@@ -5,11 +5,11 @@ const {
 } = require('express-validator/check');
 
 
-function IndexController(app) {
+module.exports = function (app) {
 
     //Handling index route
     app.get('/', function (req, res) {
-        return res.json({
+        res.json({
             message: "hello"
         })
     })
@@ -90,4 +90,3 @@ function IndexController(app) {
     })
 }
 
-module.exports = IndexController;
