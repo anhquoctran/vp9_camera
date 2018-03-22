@@ -1,9 +1,27 @@
-var db = require('../db')
+var sequelize = require('../db').config;
+var Sequelize = require('sequelize')
 const {
     check,
     validationResult
-} = require('express-validator/check');
+} = require('express-validator/check')
 
+var Item = sequelize.define('detect_data', {
+    id : Sequelize.INTEGER,
+    vehicle_plate : Sequelize.STRING, 
+    camera_id: Sequelize.INTEGER, 
+    frametime: Sequelize.DATE, 
+    encoded_plate_image: Sequelize.STRING, 
+    encoded_vehicle_image: Sequelize.STRING, 
+    location: Sequelize.STRING
+})
+
+sequelize.sync({force: true}).complete(function(err) {
+    if(err) {
+        console.log(err)
+    } else {
+        //handling success
+    }
+})
 
 function IndexController(app) {
 
@@ -52,15 +70,20 @@ function IndexController(app) {
         var location = body.location
         var vehicle_plate = body.vehicle_plate
 
-        var sql = "insert into detect_data(vehicle_plate, camera_id, frametime, encoded_plate_image, encoded_vehicle_image, location) values(?, ?, ?, ?, ?, ?)"
-        db.connect.query(sql, [vehicle_plate, camera_id, frametime, encoded_plate_image, encoded_vehicle_image, location], function (error, result) {
-            if (error) throw error
-            if (result) {
-                res.redirect("/")
-                return;
-            }
+        sequelize.sync().success(function() {
+            Item.create({
+                camera_id: body.camera_id,
+                frametime: body.frametime,
+                encoded_plate_image: body.encoded_plate_image,
+                encoded_vehicle_image: body.encoded_vehicle_image,
+                location: body.location,
+                vehicle_plate: body.vehicle_plate,
+            }).success(function(data) {
+                return res.json({
+                    message: "Inserted"
+                })
+            })
         })
-
     })
 
     app.get('/get_image', [

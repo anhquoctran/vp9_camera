@@ -19,6 +19,7 @@
     "ejs": "latest",
     "express": "latest",
     "express-validator": "^5.0.3",
-    "mysql": "latest"
+    "mysql": "latest",
+    "sequelize": "^4.37.3"
   }
 }
