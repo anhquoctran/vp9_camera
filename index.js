@@ -1,5 +1,7 @@
 var express = require("express")
 var bodyparser = require("body-parser")
+var passport = require('passport')
+
 require('dotenv').config()
 
 const PORT = process.env.PORT || 1899
@@ -13,10 +15,11 @@ app.listen(PORT, function () {
 //config express middleware
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
-
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(function(req, res, next) {
     res.removeHeader("X-Powered-By")
     next();
 })
 
-require('./controllers/IndexController')(app)
+require('./controllers/IndexController')(app, passport)

@@ -14,7 +14,7 @@ var sequelize = new Sequelize(process.env.MYSQL_DATABASE || "camera_vp9", proces
 
 sequelize.authenticate().then(function (err) {
     if (err) {
-        console.log('There is connection in ERROR');
+        console.error('Database connection error! ' + err);
     } else {
         console.log('Connection has been established successfully');
     }

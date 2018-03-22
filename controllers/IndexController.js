@@ -1,5 +1,8 @@
 var sequelize = require('../db');
 var Sequelize = require('sequelize')
+var BasicStrategy = require('passport-http').BasicStrategy
+
+
 const {
     check,
     validationResult
@@ -23,12 +26,12 @@ sequelize.sync({force: true}).then(function(err) {
     }
 })
 
-function IndexController(app) {
+function IndexController(app, passport) {
 
     //Handling index route
     app.get('/', function (req, res) {
         return res.json({
-            message: "hello"
+            message: "Success"
         })
     })
 
