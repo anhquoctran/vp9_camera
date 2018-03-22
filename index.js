@@ -3,11 +3,10 @@ var bodyparser = require("body-parser")
 require('dotenv').config()
 
 const PORT = process.env.PORT || 1899
-const HOST = process.env.HOST || '0.0.0.0'
 
 var app = express()
 
-app.listen(PORT, HOST, function () {
+app.listen(PORT, function () {
     console.log("Application is running at port: " + PORT)
 })
 
