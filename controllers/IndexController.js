@@ -1,4 +1,4 @@
-var sequelize = require('../db').config;
+var sequelize = require('../db');
 var Sequelize = require('sequelize')
 const {
     check,
@@ -6,16 +6,16 @@ const {
 } = require('express-validator/check')
 
 var Item = sequelize.define('detect_data', {
-    id : Sequelize.INTEGER,
-    vehicle_plate : Sequelize.STRING, 
-    camera_id: Sequelize.INTEGER, 
-    frametime: Sequelize.DATE, 
-    encoded_plate_image: Sequelize.STRING, 
-    encoded_vehicle_image: Sequelize.STRING, 
-    location: Sequelize.STRING
+    id : { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+    vehicle_plate : { type: Sequelize.STRING(10), allowNull: false }, 
+    camera_id: {type: Sequelize.INTEGER, allowNull: false},
+    frametime: { type: Sequelize.DATE, allowNull: false },
+    encoded_plate_image: {type: Sequelize.TEXT("16777216"), allowNull: false },
+    encoded_vehicle_image: {type: Sequelize.TEXT("16777216"), allowNull: false },
+    location: { type: Sequelize.STRING(10), allowNull: true }
 })
 
-sequelize.sync({force: true}).complete(function(err) {
+sequelize.sync({force: true}).then(function(err) {
     if(err) {
         console.log(err)
     } else {
@@ -70,18 +70,16 @@ function IndexController(app) {
         var location = body.location
         var vehicle_plate = body.vehicle_plate
 
-        sequelize.sync().success(function() {
-            Item.create({
-                camera_id: body.camera_id,
-                frametime: body.frametime,
-                encoded_plate_image: body.encoded_plate_image,
-                encoded_vehicle_image: body.encoded_vehicle_image,
-                location: body.location,
-                vehicle_plate: body.vehicle_plate,
-            }).success(function(data) {
-                return res.json({
-                    message: "Inserted"
-                })
+        Item.create({
+            camera_id: body.camera_id,
+            frametime: body.frametime,
+            encoded_plate_image: body.encoded_plate_image,
+            encoded_vehicle_image: body.encoded_vehicle_image,
+            location: body.location,
+            vehicle_plate: body.vehicle_plate,
+        }).then(function(data) {
+            return res.json({
+                message: "Inserted"
             })
         })
     })
