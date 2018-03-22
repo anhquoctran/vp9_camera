@@ -2,6 +2,7 @@ var sequelize = require('../db');
 var Sequelize = require('sequelize')
 var BasicStrategy = require('passport-http').BasicStrategy
 var moment = require('moment')
+var fs = require('fs')
 
 const {
     check,
@@ -81,6 +82,7 @@ function IndexController(app, passport) {
             location: body.location,
             vehicle_plate: body.vehicle_plate,
         }).then(function(data) {
+            
             return res.json({
                 message: "Inserted"
             })
@@ -97,13 +99,30 @@ function IndexController(app, passport) {
         .withMessage('cannot be null and must be valid date time format')
         .exists()
     ], function (req, res) {
-        Item.findAll({
-            where: {
-                camera_id: res.body.camera_id,
-                frametime: moment(res.body.from).toDate()
-            }
-        })
+        const errors = validationResult(req)
+        if(!errors.isEmpty()) {
+            return res.status(422).json({
+                errors: errors.mapped()
+            })
+        } else {
+            Item.findAll({
+                where: {
+                    camera_id: res.body.camera_id,
+                    frametime: moment(res.body.from).toDate()
+                }
+            })
+        }
+        
     })
+
+    function guid() {
+        function s4() {
+          return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+      }
 }
 
 module.exports = IndexController;
