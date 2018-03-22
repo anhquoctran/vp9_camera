@@ -19,7 +19,7 @@ sequelize.sync({force: true}).then(function(err) {
     if(err) {
         console.log(err)
     } else {
-        //handling success
+        console.log("Migration database successfully...")
     }
 })
 
@@ -94,18 +94,9 @@ function IndexController(app) {
         .withMessage('cannot be null and must be valid date time format')
         .exists()
     ], function (req, res) {
-        var sql = "SELECT * FROM data_detect WHERE camera_id = ? and last_update from ? to ?"
-
-        db.connect.query(sql, [], function (err, result) {
-            if (err) {
-                throw err
-                res.status(500).send({
-                    message: "ERROR_GET"
-                })
-            } else {
-                res.json({
-                    result: result
-                })
+        Item.findAll({
+            where: {
+                camera_id: res.body.camera_id
             }
         })
     })
