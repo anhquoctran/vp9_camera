@@ -16,6 +16,7 @@ app.use(bodyparser.urlencoded({ extended: true }));
 
 app.use(function(req, res, next) {
     res.removeHeader("X-Powered-By")
+    next();
 })
 
 require('./controllers/IndexController')(app)
