@@ -1,7 +1,7 @@
 var sequelize = require('../db');
 var Sequelize = require('sequelize')
 var BasicStrategy = require('passport-http').BasicStrategy
-
+var moment = require('moment')
 
 const {
     check,
@@ -18,7 +18,7 @@ var Item = sequelize.define('detect_data', {
     location: { type: Sequelize.STRING(10), allowNull: true }
 })
 
-sequelize.sync({force: true}).then(function(err) {
+sequelize.sync().then(function(err) {
     if(err) {
         console.log(err)
     } else {
@@ -99,7 +99,8 @@ function IndexController(app, passport) {
     ], function (req, res) {
         Item.findAll({
             where: {
-                camera_id: res.body.camera_id
+                camera_id: res.body.camera_id,
+                frametime: moment(res.body.from).toDate()
             }
         })
     })
