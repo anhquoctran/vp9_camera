@@ -1,30 +1,24 @@
 var express = require("express")
 var bodyparser = require("body-parser")
+var passport = require('passport')
+var morgan = require('morgan')
+
 require('dotenv').config()
 var morgan = require('morgan')
 
-const PORT =  1899
+const PORT = process.env.PORT || 1899
 var app = express()
-
-
-
-// app.set("view engine", "ejs")
-// app.use('/public', express.static(__dirname + '/public'))
 
 //config express middleware
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
-app.use(morgan('dev'))
-/*app.use(function(req, res, next) {
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(function(req, res, next) {
     res.removeHeader("X-Powered-By")
-})*/
-
-app.get('/', function(req, res) {
-    return res.send("hello")
-})
-
-//require('./controllers/route')(app)
-
+    next();
+app.use(morgan('dev'))
+require('./controllers/routes')(app, passport)
 app.listen(PORT, function () {
     console.log("Application is running at port: " + PORT)
 })
