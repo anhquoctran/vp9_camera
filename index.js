@@ -4,14 +4,10 @@ var passport = require('passport')
 var morgan = require('morgan')
 
 require('dotenv').config()
+var morgan = require('morgan')
 
 const PORT = process.env.PORT || 1899
-
 var app = express()
-
-app.listen(PORT, function () {
-    console.log("Application is running at port: " + PORT)
-})
 
 //config express middleware
 app.use(bodyparser.json());
@@ -21,7 +17,8 @@ app.use(passport.session());
 app.use(function(req, res, next) {
     res.removeHeader("X-Powered-By")
     next();
-})
 app.use(morgan('dev'))
-
 require('./controllers/routes')(app, passport)
+app.listen(PORT, function () {
+    console.log("Application is running at port: " + PORT)
+})
