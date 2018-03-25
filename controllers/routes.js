@@ -4,6 +4,8 @@ var BasicStrategy = require('passport-http').BasicStrategy
 var moment = require('moment')
 var fs = require('fs')
 
+const TABLE_NAME = '';
+
 const {
     check,
     validationResult
@@ -27,7 +29,7 @@ sequelize.sync().then(function(err) {
     }
 })
 
-function IndexController(app, passport) {
+function routes(app, passport) {
 
     //Handling index route
     app.get('/', function (req, res) {
@@ -69,7 +71,8 @@ function IndexController(app, passport) {
         const errors = validationResult(req)
         if(!errors.isEmpty()) {
             return res.status(400).json({
-                message: "Validation Error: " + errors.mapped(),
+                message: "Validation Error" + errors.mapped(),
+                details: errors.mapped(),
                 success: false,
                 status: 400
             })
@@ -83,6 +86,8 @@ function IndexController(app, passport) {
         var encoded_vehicle_image = body.encoded_vehicle_image
         var location = body.location
         var vehicle_plate = body.vehicle_plate
+
+        sequelize.query(`delete from ${TABLE_NAME} where ( createAt < GETDATE() - 3 )`, { type: sequelize.QueryTypes.DELETE})
 
         Item.create({
             camera_id: body.camera_id,
@@ -107,15 +112,15 @@ function IndexController(app, passport) {
         })
     })
 
-    app.get('/get_image', [
-        check('camera_id')
-        .withMessage('cannot be null or empty')
-        .exists()
-        .isNumeric(),
+    app.all('/get_image', [
+        // check('camera_id')
+        // .withMessage('cannot be null or empty')
+        // .exists()
+        // .isNumeric(),
 
-        check('from')
-        .withMessage('cannot be null and must be valid date time format')
-        .exists()
+        // check('from')
+        // .withMessage('cannot be null and must be valid date time format')
+        // .exists()
     ], function (req, res) {
         const errors = validationResult(req)
         if(!errors.isEmpty()) {
@@ -125,12 +130,27 @@ function IndexController(app, passport) {
                 status: 422
             })
         } else {
-            Item.findAll({})
-            .then(function(data) {})
-            .catch(function(error) {})
+
+            sequelize.query("SELECT * FROM detect_data", { type: sequelize.QueryTypes.SELECT })
+            .then(data => {
+                return res.json({
+                    message: "QUERY_OK",
+                    success: true,
+                    status: 200,
+                    data: data
+                })
+            })
+            .catch(error => {
+                return res.json(500).send({
+                    message: "QUERY_FAILED",
+                    success: false,
+                    status: 500,
+                    data: null
+                })
+            })
         }
         
     })
 }
 
-module.exports = IndexController;
+module.exports = routes;

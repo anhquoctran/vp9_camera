@@ -24,4 +24,4 @@ app.use(function(req, res, next) {
 })
 app.use(morgan('dev'))
 
-require('./controllers/IndexController')(app, passport)
+require('./controllers/routes')(app, passport)
