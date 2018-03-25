@@ -4,7 +4,7 @@ var BasicStrategy = require('passport-http').BasicStrategy
 var moment = require('moment')
 var fs = require('fs')
 
-const TABLE_NAME = ''
+const TABLE_NAME = 'detect_data'
 
 const {
 	check,
