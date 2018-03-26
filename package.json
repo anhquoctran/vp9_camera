@@ -11,7 +11,7 @@
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Anh Quoc Tran",
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.0",
