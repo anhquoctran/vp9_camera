@@ -71,8 +71,7 @@ function routes(app, passport) {
 		const errors = validationResult(req)
 		if(!errors.isEmpty()) {
 			return res.status(400).json({
-				message: "Validation Error" + errors.mapped(),
-				details: errors.mapped(),
+				message: "ERROR_VALIDATION",
 				success: false,
 				status: 400
 			})
