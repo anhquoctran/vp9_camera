@@ -1,33 +1,40 @@
-var sequelize = require('../db')
-var Sequelize = require('sequelize')
+//var sequelize = require('../db')
+//var Sequelize = require('sequelize')
 var BasicStrategy = require('passport-http').BasicStrategy
 var moment = require('moment')
 var fs = require('fs')
+var loki = require('lokijs')
+var path = require('path')
+
 
 const TABLE_NAME = 'detect_data'
+
+var db = new loki(path.join(__dirname, "..", "data.json"))
+db.autosave = true
+var images = db.addCollection("images")
 
 const {
 	check,
 	validationResult
 } = require('express-validator/check')
 
-var Item = sequelize.define('detect_data', {
-	id : { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
-	vehicle_plate : { type: Sequelize.STRING(10), allowNull: false }, 
-	camera_id: {type: Sequelize.INTEGER, allowNull: false},
-	frametime: { type: Sequelize.DATE, allowNull: false },
-	encoded_plate_image: {type: Sequelize.TEXT("16777216"), allowNull: false },
-	encoded_vehicle_image: {type: Sequelize.TEXT("16777216"), allowNull: false },
-	location: { type: Sequelize.STRING(10), allowNull: true }
-})
+// var Item = sequelize.define('detect_data', {
+// 	id : { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
+// 	vehicle_plate : { type: Sequelize.STRING(10), allowNull: false }, 
+// 	camera_id: {type: Sequelize.INTEGER, allowNull: false},
+// 	frametime: { type: Sequelize.DATE, allowNull: false },
+// 	encoded_plate_image: {type: Sequelize.TEXT("16777216"), allowNull: false },
+// 	encoded_vehicle_image: {type: Sequelize.TEXT("16777216"), allowNull: false },
+// 	location: { type: Sequelize.STRING(10), allowNull: true }
+// })
 
-sequelize.sync().then(function(err) {
-	if(err) {
-		console.log(err)
-	} else {
-		console.log("Migration database successfully...")
-	}
-})
+// sequelize.sync().then(function(err) {
+// 	if(err) {
+// 		console.log(err)
+// 	} else {
+// 		console.log("Migration database successfully...")
+// 	}
+// })
 
 function routes(app, passport) {
 
@@ -86,29 +93,56 @@ function routes(app, passport) {
 		var location = body.location
 		var vehicle_plate = body.vehicle_plate
 
-		sequelize.query(`delete from ${TABLE_NAME} where ( createAt < GETDATE() - 3 )`, { type: sequelize.QueryTypes.DELETE})
+		//sequelize.query(`delete from ${TABLE_NAME} where ( createAt < GETDATE() - 3 )`, { type: sequelize.QueryTypes.DELETE})
 
-		Item.create({
+
+		images.insert({
 			camera_id: body.camera_id,
 			frametime: body.frametime,
 			encoded_plate_image: body.encoded_plate_image,
 			encoded_vehicle_image: body.encoded_vehicle_image,
 			location: body.location,
 			vehicle_plate: body.vehicle_plate,
-		}).then(function(data) {
-			
-			return res.json({
-				message: "SAVE_OK",
-				success: true,
-				status: 200
-			})
-		}).catch(function(err) {
-			return res.status(500).send({
-				message: "SAVE_FAILED",
-				success: false,
-				status: 500
-			})
 		})
+
+		db.save(function(err) {
+			if(err) {
+				return res.status(500).send({
+					message: "SAVE_FAILED",
+					success: false,
+					status: 500
+				})
+			} else {
+				return res.json({
+					message: "SAVE_OK",
+					success: true,
+					status: 200
+				})
+			}
+		})
+
+
+		// Item.create({
+		// 	camera_id: body.camera_id,
+		// 	frametime: body.frametime,
+		// 	encoded_plate_image: body.encoded_plate_image,
+		// 	encoded_vehicle_image: body.encoded_vehicle_image,
+		// 	location: body.location,
+		// 	vehicle_plate: body.vehicle_plate,
+		// }).then(function(data) {
+			
+		// 	return res.json({
+		// 		message: "SAVE_OK",
+		// 		success: true,
+		// 		status: 200
+		// 	})
+		// }).catch(function(err) {
+		// 	return res.status(500).send({
+		// 		message: "SAVE_FAILED",
+		// 		success: false,
+		// 		status: 500
+		// 	})
+		// })
 	})
 
 	app.all('/get_image', [
@@ -129,24 +163,34 @@ function routes(app, passport) {
 				status: 422
 			})
 		} else {
-
-			sequelize.query("SELECT * FROM detect_data", { type: sequelize.QueryTypes.SELECT })
-				.then(data => {
-					return res.json({
-						message: "QUERY_OK",
-						success: true,
-						status: 200,
-						data: data
-					})
+			//db.loadCollection("images")
+			db.loadDatabase({}, function () {
+				var info = db.getCollection('images')
+				return res.json({
+					message: "QUERY_OK",
+					success: true,
+					status: 200,
+					data: info.find({ created: { $gte: new Date() } })
 				})
-				.catch(error => {
-					return res.json(500).send({
-						message: "QUERY_FAILED",
-						success: false,
-						status: 500,
-						data: null
-					})
-				})
+			})
+			
+			// sequelize.query("SELECT * FROM detect_data", { type: sequelize.QueryTypes.SELECT })
+			// 	.then(data => {
+			// 		return res.json({
+			// 			message: "QUERY_OK",
+			// 			success: true,
+			// 			status: 200,
+			// 			data: data
+			// 		})
+			// 	})
+			// 	.catch(error => {
+			// 		return res.json(500).send({
+			// 			message: "QUERY_FAILED",
+			// 			success: false,
+			// 			status: 500,
+			// 			data: null
+			// 		})
+			// 	})
 		}
 	})
 }

@@ -20,6 +20,7 @@
     "ejs": "latest",
     "express": "^4.16.3",
     "express-validator": "^5.0.3",
+    "lokijs": "^1.5.3",
     "moment": "^2.21.0",
     "morgan": "^1.9.0",
     "mysql": "^2.15.0",
