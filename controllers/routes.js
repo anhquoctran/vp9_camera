@@ -95,9 +95,10 @@ function routes(app, passport) {
 
 		//sequelize.query(`delete from ${TABLE_NAME} where ( createAt < GETDATE() - 3 )`, { type: sequelize.QueryTypes.DELETE})
 
-
+		var name = `cam_${body.camera_id}_${getDateTimeString(body.frametime)}_${body.vehicle_plate}`
 		images.insert({
 			camera_id: body.camera_id,
+			name: name,
 			frametime: body.frametime,
 			encoded_plate_image: body.encoded_plate_image,
 			encoded_vehicle_image: body.encoded_vehicle_image,
@@ -145,6 +146,11 @@ function routes(app, passport) {
 		// })
 	})
 
+	function getDateTimeString(date) {
+		var d = new Date(date)
+		return d.getFullYear() + d.getMonth() + d.getDay() + "_" + d.getHours() + d.getMinutes() + d.getSeconds()
+	}
+
 	app.all('/get_image', [
 		// check('camera_id')
 		// .withMessage('cannot be null or empty')
@@ -166,12 +172,22 @@ function routes(app, passport) {
 			//db.loadCollection("images")
 			db.loadDatabase({}, function () {
 				var info = db.getCollection('images')
-				return res.json({
-					message: "QUERY_OK",
-					success: true,
-					status: 200,
-					data: info.find({ created: { $gte: new Date() } })
-				})
+				if(info) {
+					return res.json({
+						message: "QUERY_OK",
+						success: true,
+						status: 200,
+						data: info.find({ created: { $gte: new Date() } })
+					})
+				} else {
+					return res.status(404).send({
+						message: "NOT_FOUND",
+						success: false,
+						status: 500,
+						data: null
+					})
+				}
+				
 			})
 			
 			// sequelize.query("SELECT * FROM detect_data", { type: sequelize.QueryTypes.SELECT })
