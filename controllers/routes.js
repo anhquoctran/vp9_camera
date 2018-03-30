@@ -109,7 +109,7 @@ function routes(app, passport) {
 		})
 
 		decode_base64(body.encoded_plate_image, name + '_plate.jpg')
-		decode_base64(body.encoded_vehicle_image, name + '_plate.jpg')
+		decode_base64(body.encoded_vehicle_image, name + '_vehicle.jpg')
 
 		db.save(function(err) {
 			if(err) {
