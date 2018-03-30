@@ -1,0 +1,190 @@
+{
+    "filename": "E:\\Study\\NodeJS\\HelloMVC2\\HelloMVC\\data.json",
+    "collections": [{
+        "name": "images",
+        "data": [{
+            "camera_id": 145,
+            "name": "cam_145_2022_21520_30A-12345",
+            "frametime": "2017-02-02 02:15:20",
+            "encoded_plate_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "encoded_vehicle_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "location": "HueIC",
+            "vehicle_plate": "30A-12345",
+            "meta": {
+                "revision": 0,
+                "created": 1522376505714,
+                "version": 0
+            },
+            "$loki": 1
+        }, {
+            "camera_id": 145,
+            "name": "cam_145_2022_21520_30A-12345",
+            "frametime": "2017-02-02 02:15:20",
+            "encoded_plate_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "encoded_vehicle_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "location": "HueIC",
+            "vehicle_plate": "30A-12345",
+            "meta": {
+                "revision": 0,
+                "created": 1522376566811,
+                "version": 0
+            },
+            "$loki": 2
+        }, {
+            "camera_id": 145,
+            "name": "cam_145_2022_21520_30A-12345",
+            "frametime": "2017-02-02 02:15:20",
+            "encoded_plate_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "encoded_vehicle_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "location": "HueIC",
+            "vehicle_plate": "30A-12345",
+            "meta": {
+                "revision": 0,
+                "created": 1522376567803,
+                "version": 0
+            },
+            "$loki": 3
+        }, {
+            "camera_id": 145,
+            "name": "cam_145_2022_21520_30A-12345",
+            "frametime": "2017-02-02 02:15:20",
+            "encoded_plate_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "encoded_vehicle_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "location": "HueIC",
+            "vehicle_plate": "30A-12345",
+            "meta": {
+                "revision": 0,
+                "created": 1522376568449,
+                "version": 0
+            },
+            "$loki": 4
+        }, {
+            "camera_id": 145,
+            "name": "cam_145_2022_21520_30A-12345",
+            "frametime": "2017-02-02 02:15:20",
+            "encoded_plate_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "encoded_vehicle_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "location": "HueIC",
+            "vehicle_plate": "30A-12345",
+            "meta": {
+                "revision": 0,
+                "created": 1522376568990,
+                "version": 0
+            },
+            "$loki": 5
+        }, {
+            "camera_id": 145,
+            "name": "cam_145_2022_21520_30A-12345",
+            "frametime": "2017-02-02 02:15:20",
+            "encoded_plate_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "encoded_vehicle_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "location": "HueIC",
+            "vehicle_plate": "30A-12345",
+            "meta": {
+                "revision": 0,
+                "created": 1522376569260,
+                "version": 0
+            },
+            "$loki": 6
+        }, {
+            "camera_id": 145,
+            "name": "cam_145_2022_21520_30A-12345",
+            "frametime": "2017-02-02 02:15:20",
+            "encoded_plate_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "encoded_vehicle_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "location": "HueIC",
+            "vehicle_plate": "30A-12345",
+            "meta": {
+                "revision": 0,
+                "created": 1522376569612,
+                "version": 0
+            },
+            "$loki": 7
+        }, {
+            "camera_id": 145,
+            "name": "cam_145_2022_21520_30A-12345",
+            "frametime": "2017-02-02 02:15:20",
+            "encoded_plate_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "encoded_vehicle_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "location": "HueIC",
+            "vehicle_plate": "30A-12345",
+            "meta": {
+                "revision": 0,
+                "created": 1522376580192,
+                "version": 0
+            },
+            "$loki": 8
+        }, {
+            "camera_id": 145,
+            "name": "cam_145_2022_21520_30A-12345",
+            "frametime": "2017-02-02 02:15:20",
+            "encoded_plate_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "encoded_vehicle_image": "R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=",
+            "location": "HueIC",
+            "vehicle_plate": "30A-12345",
+            "meta": {
+                "revision": 0,
+                "created": 1522376606487,
+                "version": 0
+            },
+            "$loki": 9
+        }],
+        "idIndex": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "binaryIndices": {},
+        "constraints": null,
+        "uniqueNames": [],
+        "transforms": {},
+        "objType": "images",
+        "dirty": false,
+        "cachedIndex": null,
+        "cachedBinaryIndex": null,
+        "cachedData": null,
+        "adaptiveBinaryIndices": true,
+        "transactional": false,
+        "cloneObjects": false,
+        "cloneMethod": "parse-stringify",
+        "asyncListeners": false,
+        "disableMeta": false,
+        "disableChangesApi": true,
+        "disableDeltaChangesApi": true,
+        "autoupdate": false,
+        "serializableIndices": true,
+        "ttl": null,
+        "maxId": 9,
+        "DynamicViews": [],
+        "events": {
+            "insert": [null],
+            "update": [null],
+            "pre-insert": [],
+            "pre-update": [],
+            "close": [],
+            "flushbuffer": [],
+            "error": [],
+            "delete": [null],
+            "warning": [null]
+        },
+        "changes": []
+    }],
+    "databaseVersion": 1.5,
+    "engineVersion": 1.5,
+    "autosave": true,
+    "autosaveInterval": 5000,
+    "autosaveHandle": null,
+    "throttledSaves": true,
+    "options": {
+        "serializationMethod": "normal",
+        "destructureDelimiter": "$<\n"
+    },
+    "persistenceMethod": "fs",
+    "persistenceAdapter": null,
+    "verbose": false,
+    "events": {
+        "init": [null],
+        "loaded": [],
+        "flushChanges": [],
+        "close": [],
+        "changes": [],
+        "warning": []
+    },
+    "ENV": "NODEJS"
+}
