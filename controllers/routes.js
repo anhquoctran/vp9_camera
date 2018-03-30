@@ -7,7 +7,6 @@ var loki = require('lokijs')
 var path = require('path')
 var buffer = require('buffer')
 
-
 const TABLE_NAME = 'detect_data'
 
 var db = new loki(path.join(__dirname, "..", "data.json"))
@@ -37,8 +36,10 @@ const {
 // 	}
 // })
 
-function routes(app, passport) {
+function routes(app, server) {
 
+	var io = require('socket.io')(server)
+	
 	//Handling index route
 	app.get('/', function (req, res) {
 		return res.json({
@@ -98,7 +99,8 @@ function routes(app, passport) {
 		//sequelize.query(`delete from ${TABLE_NAME} where ( createAt < GETDATE() - 3 )`, { type: sequelize.QueryTypes.DELETE})
 
 		var name = `cam_${body.camera_id}_${getDateTimeString(body.frametime)}_${body.vehicle_plate}`
-		images.insert({
+
+		var item = {
 			camera_id: body.camera_id,
 			name: name,
 			frametime: body.frametime,
@@ -106,7 +108,10 @@ function routes(app, passport) {
 			encoded_vehicle_image: body.encoded_vehicle_image,
 			location: body.location,
 			vehicle_plate: body.vehicle_plate,
-		})
+		}
+
+		images.insert(item)
+		io.sockets.emit('plate', item)
 
 		decode_base64(body.encoded_plate_image, name + '_plate.jpg')
 		decode_base64(body.encoded_vehicle_image, name + '_vehicle.jpg')
