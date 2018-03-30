@@ -9,14 +9,17 @@ const PORT = process.env.PORT || 1899
 var app = express()
 
 //config express middleware
-app.use(bodyparser.json())
-app.use(bodyparser.urlencoded({ extended: true }))
+app.use(bodyparser.json({
+	limit: '500mb'
+}))
+app.use(bodyparser.urlencoded({ extended: true, limit: '500mb' }))
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(function(req, res, next) {
 	res.removeHeader('X-Powered-By')
 	next()
 })
+//app.use(express.bodyParser({limit: '500mb'}))
 
 app.use(morgan('dev'))
 require('./controllers/routes')(app, passport)
