@@ -5,6 +5,7 @@ var moment = require('moment')
 var fs = require('fs')
 var loki = require('lokijs')
 var path = require('path')
+var buffer = require('buffer')
 
 
 const TABLE_NAME = 'detect_data'
@@ -79,6 +80,7 @@ function routes(app, passport) {
 		if(!errors.isEmpty()) {
 			return res.status(400).json({
 				message: "ERROR_VALIDATION",
+				details: errors.mapped(),
 				success: false,
 				status: 400
 			})
@@ -105,6 +107,9 @@ function routes(app, passport) {
 			location: body.location,
 			vehicle_plate: body.vehicle_plate,
 		})
+
+		decode_base64(body.encoded_plate_image, name + '_plate.jpg')
+		decode_base64(body.encoded_vehicle_image, name + '_plate.jpg')
 
 		db.save(function(err) {
 			if(err) {
@@ -149,6 +154,30 @@ function routes(app, passport) {
 	function getDateTimeString(date) {
 		var d = new Date(date)
 		return d.getFullYear() + d.getMonth() + d.getDay() + "_" + d.getHours() + d.getMinutes() + d.getSeconds()
+	}
+
+	function decode_base64(base64str , filename){
+
+		var buf = Buffer.from(base64str,'base64')
+		var appDir = path.dirname(require.main.filename)
+		fs.writeFile(path.join(appDir, '/images_data', makeid() + '_' + filename), base64str, 'base64' , function(error){
+			if(error){
+				throw error
+			}else{
+				console.log('File created from base64 string!')
+				return true
+			}
+		})
+	}
+
+	function makeid() {
+		var text = ""
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+		
+		for (var i = 0; i < 5; i++)
+			text += possible.charAt(Math.floor(Math.random() * possible.length))
+		
+		return text
 	}
 
 	app.all('/get_image', [
