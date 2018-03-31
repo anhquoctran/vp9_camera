@@ -39,7 +39,8 @@ const {
 function routes(app, server) {
 
 	var io = require('socket.io')(server)
-	
+	var appDir = path.dirname(require.main.filename)
+
 	//Handling index route
 	app.get('/', function (req, res) {
 		return res.json({
@@ -156,35 +157,6 @@ function routes(app, server) {
 		// })
 	})
 
-	function getDateTimeString(date) {
-		var d = new Date(date)
-		return d.getFullYear() + d.getMonth() + d.getDay() + "_" + d.getHours() + d.getMinutes() + d.getSeconds()
-	}
-
-	function decode_base64(base64str , filename){
-
-		var buf = Buffer.from(base64str,'base64')
-		var appDir = path.dirname(require.main.filename)
-		fs.writeFile(path.join(appDir, '/images_data', makeid() + '_' + filename), base64str, 'base64' , function(error){
-			if(error){
-				throw error
-			}else{
-				console.log('File created from base64 string!')
-				return true
-			}
-		})
-	}
-
-	function makeid() {
-		var text = ""
-		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-		
-		for (var i = 0; i < 5; i++)
-			text += possible.charAt(Math.floor(Math.random() * possible.length))
-		
-		return text
-	}
-
 	app.all('/get_image', [
 		// check('camera_id')
 		// .withMessage('cannot be null or empty')
@@ -243,6 +215,68 @@ function routes(app, server) {
 			// 	})
 		}
 	})
+
+	function getDateTimeString(date) {
+		var d = new Date(date)
+		return d.getFullYear() + d.getMonth() + d.getDay() + "_" + d.getHours() + d.getMinutes() + d.getSeconds()
+	}
+
+	function decode_base64(base64str , filename){
+
+		var buf = Buffer.from(base64str,'base64')
+		
+		fs.writeFile(path.join(appDir, '/images_data', makeid() + '_' + filename), base64str, 'base64' , function(error){
+			if(error){
+				throw error
+			}else{
+				console.log('File created from base64 string!')
+				return true
+			}
+		})
+	}
+
+	function makeid() {
+		var text = ""
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+		
+		for (var i = 0; i < 5; i++)
+			text += possible.charAt(Math.floor(Math.random() * possible.length))
+		
+		return text
+	}
+
+	function deleteFolderAfterWeekAgo() {
+		console("Starting cleanup images directory...")
+		fs.readdir("./images_data", (errors, files) => {
+
+			files.forEach(file => {
+
+				var fullFilePath = path.join(appDir, '/images_data', file)
+
+				fs.stat(fullFilePath, (err, stat) => {
+
+					if(err) console.error(err)
+					else {
+						
+						var fileCreationTime = new Date(stat.birthtime)
+						var currentTime = new Date()
+						var diffDays = parseInt((currentTime - fileCreationTime) / (1000 * 60 * 60 * 24))
+						if(diffDays >= 7) {
+							fs.unlink(fullFilePath, function(ers) {
+								if(ers) console.error(ers)
+								else {
+									console.log("Image file named " + file + " has been deleted after 7 days")
+								}
+							})
+						}
+					}
+					
+				})
+			})
+		})
+	}
+
+	setInterval(deleteFolderAfterWeekAgo, 86400000)
 }
 
 module.exports = routes
