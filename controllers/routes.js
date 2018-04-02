@@ -81,7 +81,7 @@ function routes(app, server) {
 			.trim()
 			.isBase64()
 	], function (req, res) {
-
+		console.log("OK")
 		const errors = validationResult(req)
 		if(!errors.isEmpty()) {
 			return res.status(400).json({
