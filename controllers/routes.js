@@ -51,20 +51,24 @@ function routes(app, server) {
 	app.post('/add_image', [
 		check('camera_id')
 			.exists()
+			.trim()
 			.isNumeric()
 			.withMessage('cannot be null and must be numeric type'),
 
 		check('frametime')
 			.exists()
+			.trim()
 			.withMessage('cannot be null and must be date time type')
 		,
 
 		check('location')
 			.exists()
+			.trim()
 			.withMessage('cannot be null'),
 
 		check('vehicle_plate')
 			.exists()
+			.trim()
 			.withMessage('cannot be null'),
 
 		check('encoded_plate_image')
