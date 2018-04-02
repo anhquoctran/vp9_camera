@@ -1,5 +1,5 @@
 node_modules
 .env
 .vscode
-images_data/*
+#images_data/*
 .eslintrc.json
