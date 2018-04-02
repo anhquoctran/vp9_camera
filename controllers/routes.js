@@ -245,7 +245,8 @@ function routes(app, server) {
 		return text
 	}
 
-	function deleteFolderAfterWeekAgo() {
+	function deleteFolderAfterWeek() {
+
 		console("Starting cleanup images directory...")
 		fs.readdir("./images_data", (errors, files) => {
 
@@ -257,7 +258,7 @@ function routes(app, server) {
 
 					if(err) console.error(err)
 					else {
-						
+
 						var fileCreationTime = new Date(stat.birthtime)
 						var currentTime = new Date()
 						var diffDays = parseInt((currentTime - fileCreationTime) / (1000 * 60 * 60 * 24))
@@ -276,7 +277,7 @@ function routes(app, server) {
 		})
 	}
 
-	setInterval(deleteFolderAfterWeekAgo, 86400000)
+	setInterval(deleteFolderAfterWeek, 86400000)
 }
 
 module.exports = routes
