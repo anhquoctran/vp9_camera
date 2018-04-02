@@ -247,13 +247,11 @@ function routes(app, server) {
 
 	function deleteFolderAfterWeek() {
 
-		console("Starting cleanup images directory...")
+		console.log("Starting cleanup images directory...")
 		fs.readdir("./images_data", (errors, files) => {
 
 			files.forEach(file => {
-
 				var fullFilePath = path.join(appDir, '/images_data', file)
-
 				fs.stat(fullFilePath, (err, stat) => {
 
 					if(err) console.error(err)
@@ -262,11 +260,11 @@ function routes(app, server) {
 						var fileCreationTime = new Date(stat.birthtime)
 						var currentTime = new Date()
 						var diffDays = parseInt((currentTime - fileCreationTime) / (1000 * 60 * 60 * 24))
-						if(diffDays >= 7) {
+						if(diffDays >= 3) {
 							fs.unlink(fullFilePath, function(ers) {
 								if(ers) console.error(ers)
 								else {
-									console.log("Image file named " + file + " has been deleted after 7 days")
+									console.log("Image file named " + file + " has been deleted after 3 days")
 								}
 							})
 						}
@@ -277,7 +275,7 @@ function routes(app, server) {
 		})
 	}
 
-	setInterval(deleteFolderAfterWeek, 86400000)
+	setInterval(deleteFolderAfterWeek, 60000)
 }
 
 module.exports = routes
