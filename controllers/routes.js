@@ -283,7 +283,7 @@ function routes(app, server) {
 	}
 
 	//setInterval(deleteFolderAfterWeek, ‪259200000‬‬)
-	setInterval(deleteFolderAfterWeek, 259200000)
+	setInterval(deleteFolderAfterWeek, 86400000)
 }
 
 module.exports = routes
