@@ -3,3 +3,4 @@ node_modules
 .vscode
 #images_data/*
 .eslintrc.json
+data.json
