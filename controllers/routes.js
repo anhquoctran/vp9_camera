@@ -40,6 +40,9 @@ function routes(app, server) {
 
 	var io = require('socket.io')(server)
 	var appDir = path.dirname(require.main.filename)
+	io.on("test", function(data) {
+		console.log(data)
+	})
 
 	//Handling index route
 	app.get('/', function (req, res) {
