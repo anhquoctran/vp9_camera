@@ -6,6 +6,12 @@ var fs = require('fs')
 var loki = require('lokijs')
 var path = require('path')
 var buffer = require('buffer')
+var validator = require('validator')
+const {
+	check,
+	validationResult
+} = require('express-validator/check')
+
 
 const TABLE_NAME = 'detect_data'
 
@@ -13,10 +19,9 @@ var db = new loki(path.join(__dirname, "..", "data.json"))
 db.autosave = true
 var images = db.addCollection("images")
 
-const {
-	check,
-	validationResult
-} = require('express-validator/check')
+validator.validator = function(datestr) {
+	return !isNaN(Date.parse(datestr))
+}
 
 // var Item = sequelize.define('detect_data', {
 // 	id : { type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true },
@@ -39,10 +44,9 @@ const {
 function routes(app, server) {
 
 	var io = require('socket.io')(server)
+
+
 	var appDir = path.dirname(require.main.filename)
-	io.on("test", function(data) {
-		console.log(data)
-	})
 
 	//Handling index route
 	app.get('/', function (req, res) {
@@ -77,12 +81,13 @@ function routes(app, server) {
 		check('encoded_plate_image')
 			.exists()
 			.trim()
-			.isBase64(),
-
+			.isBase64()
+			.withMessage('cannot be null and must be a base64 string'),
 		check('encoded_vehicle_image')
 			.exists()
 			.trim()
 			.isBase64()
+			.withMessage('cannot be null and must be a base64 string')
 	], function (req, res) {
 		console.log("OK")
 		const errors = validationResult(req)
@@ -119,8 +124,7 @@ function routes(app, server) {
 		}
 
 		images.insert(item)
-		io.sockets.emit('plate', item)
-
+		io.emit('plate', item)
 		decode_base64(body.encoded_plate_image, name + '_plate.jpg')
 		decode_base64(body.encoded_vehicle_image, name + '_vehicle.jpg')
 
