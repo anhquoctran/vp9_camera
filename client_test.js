@@ -5,7 +5,7 @@ socket.on('connect', function() {
 })
 
 socket.on('plate', function(plate) {
-    console.log(JSON.stringify(plate))
+    console.log(JSON.stringify(plate.name))
 })
 
 socket.on('disconnect', function() {
