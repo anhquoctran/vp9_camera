@@ -5,7 +5,7 @@ var morgan = require('morgan')
 
 require('dotenv').config()
 
-const PORT = process.env.PORT || 1899
+const PORT = 1899
 var app = express()
 
 var server = require('http').createServer(app)
