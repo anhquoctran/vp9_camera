@@ -15,6 +15,10 @@ const {
 
 const TABLE_NAME = 'detect_data'
 
+if(!fs.existsSync(path.join(__dirname, "..", "data.json"))) {
+	fs.closeSync(fs.openSync(filepath, 'w'));
+}
+
 var db = new loki(path.join(__dirname, "..", "data.json"))
 db.autosave = true
 var images = db.addCollection("images")
@@ -45,6 +49,13 @@ function routes(app, server) {
 
 	var io = require('socket.io')(server)
 
+	io.sockets.on('connection', function(socket) {
+		console.log('Client connected ' + socket.handshake.address)
+	})
+
+	io.sockets.on('disconnect', function() {
+		console.log("Client disconnected")
+	})
 
 	var appDir = path.dirname(require.main.filename)
 
@@ -67,7 +78,6 @@ function routes(app, server) {
 			.trim()
 			.withMessage('cannot be null and must be date time type')
 		,
-
 		check('location')
 			.exists()
 			.trim()
@@ -89,7 +99,6 @@ function routes(app, server) {
 			.isBase64()
 			.withMessage('cannot be null and must be a base64 string')
 	], function (req, res) {
-		console.log("OK")
 		const errors = validationResult(req)
 		if(!errors.isEmpty()) {
 			return res.status(400).json({
@@ -99,9 +108,9 @@ function routes(app, server) {
 				status: 400
 			})
 		}
+		
 
 		var body = req.body
-		
 		var camera_id = body.camera_id
 		var frametime = body.frametime
 		var encoded_plate_image = body.encoded_plate_image
